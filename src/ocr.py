@@ -1,4 +1,5 @@
 import lmstudio as lms
+import ollama
 from ollama import chat
 from ollama import ChatResponse
 import os
@@ -43,6 +44,8 @@ def ocr_images_ollama():
 
     directory = "./output" # Set the directory where the outputted images will be located
 
+    model_name = "deepseek-ocr:latest" # Set the model name
+
     images_to_process = [] # Array to store the variables in
 
     for entry in os.scandir(directory): # Loops the output diretory for the images to load
@@ -51,16 +54,19 @@ def ocr_images_ollama():
     
     for current_file in images_to_process: # Loops through the images and proccesses them all individually
 
-        response: ChatResponse = chat(model='qwen3-vl:8b', messages=[
-        {
-            'role': 'user', # Set the role of the api
-            'content': 'OCR this image.', # Prompt
-            'images': [current_file] # Select the image
-        },
-        ])
+        response: ChatResponse = chat(
+            model=model_name,
+            messages=[
+            {
+                'role': 'user', # Set the role of the api
+                'content': 'Free OCR.', # Prompt
+                'images': [current_file] # Select the image
+            },
+        ],
         options={
-            'num_ctx':20000, # Set the context length
+            'num_ctx':8000, # Set the context length
         }
+        )
 
         file_name_only = os.path.basename(current_file)
 
@@ -70,4 +76,4 @@ def ocr_images_ollama():
         f.write(response['message']['content'])
         f.close()
 
-    chat(model='qwen3-vl:8b', messages =[], keep_alive=0)
+    chat(model=model_name, messages =[], keep_alive=0)
