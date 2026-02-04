@@ -17,14 +17,12 @@ def ocr_images():
         if entry.is_file():
             images_to_process.append(entry.path)
 
-
+    # Load the model that will be used
+    model = lms.llm("allenai/olmocr-2-7b")
 
     for current_file in images_to_process:
         image_path = current_file
         image_handle = lms.prepare_image(image_path)
-
-        # Load the model that will be used
-        model = lms.llm("allenai/olmocr-2-7b")
 
         chat = lms.Chat()
         chat.add_user_message("Perform OCR on this image.", images=[image_handle])
@@ -38,3 +36,4 @@ def ocr_images():
         f = open(f"./output/text/{file_name_only}.txt", "w")
         f.write("\n")
         f.write(prediction)
+        f.close()
