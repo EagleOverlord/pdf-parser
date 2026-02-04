@@ -13,7 +13,7 @@ def initialise_log():
     f.write(f"The process started at: {current_datetime} \n")
     f.close()
 
-def log_moment(event):
+def log(event):
     
     f = open("./log/log.txt", "a")
     f.write(f"{event} \n")

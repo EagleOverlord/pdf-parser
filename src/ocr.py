@@ -3,6 +3,7 @@ from ollama import chat
 from ollama import ChatResponse
 import os
 import datetime
+import log
 
 def ocr_images_lmstudio():
 
@@ -40,31 +41,33 @@ def ocr_images_lmstudio():
 
 def ocr_images_ollama():
 
-    directory = "./output"
+    directory = "./output" # Set the directory where the outputted images will be located
 
-    images_to_process = []
+    images_to_process = [] # Array to store the variables in
 
-    for entry in os.scandir(directory):
+    for entry in os.scandir(directory): # Loops the output diretory for the images to load
         if entry.is_file():
             images_to_process.append(entry.path)
     
-    for current_file in images_to_process:
+    for current_file in images_to_process: # Loops through the images and proccesses them all individually
+
         response: ChatResponse = chat(model='qwen3-vl:8b', messages=[
         {
-            'role': 'user',
-            'content': 'OCR this image.',
-            'images': [current_file]
+            'role': 'user', # Set the role of the api
+            'content': 'OCR this image.', # Prompt
+            'images': [current_file] # Select the image
         },
         ])
         options={
-            'num_ctx':20000,
+            'num_ctx':20000, # Set the context length
         }
 
         file_name_only = os.path.basename(current_file)
 
+        # Write the results to a .txt file named after the input
         f = open(f"./output/text/{file_name_only}.txt", "w")
         f.write("\n")
         f.write(response['message']['content'])
         f.close()
 
-ocr_images_ollama()
+    chat(model='qwen3-vl:8b', messages =[], keep_alive=0)
