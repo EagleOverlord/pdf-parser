@@ -23,7 +23,7 @@ image_conversion_end = time.time()
 log.log_moment(f"Image conversion took: {image_conversion_end - image_conversion_start} seconds.")
 
 ocr_start = time.time()
-ocr.ocr_images()
+ocr.ocr_images_ollama()
 ocr_end = time.time()
 
 log.log_moment(f"OCR conversion took: {ocr_end - ocr_start} seconds.")

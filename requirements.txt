@@ -1,5 +1,6 @@
 pdf2image
 Pillow # dependency of pdf2image
 lmstudio
+ollama
 
 # poppler needs to be installed via a package manager or a .zip

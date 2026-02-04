@@ -25,4 +25,3 @@ def convert_pdf_to_images():
             file_name = f"./output/{clean_name}page_{i}.jpg"
             
             image.save(file_name, "JPEG")
-
