@@ -6,11 +6,6 @@ def ocr_images():
     # Start the log with the date and time
     date_time = datetime.datetime.now() # Get the current date and time
     date_time = str(date_time) # Convert the date & time to a string
-
-    with open("./log/log.txt", "w") as f:
-        f.write("*******************\n")
-        f.write(date_time)
-        f.close()
     
     # Get the file name and location of all the images in the directory
 
