@@ -12,7 +12,7 @@ def convert_pdf_to_images():
 
     # Find all the pdfs to process
     for entry in os.scandir(input_directory):
-        if entry.is_file():
+        if entry.is_file() and entry.name.lower().endswith('.pdf'):
             pdfs_to_process.append(entry.path)
     
     for current_file in pdfs_to_process:

@@ -7,6 +7,7 @@ import ocr
 import os
 import datetime
 import time
+import summarise
 
 log.log(f"Imports successfull at: {datetime.datetime.now()}")
 
@@ -24,7 +25,13 @@ image_conversion_end = time.time()
 log.log(f"Image conversion took: {image_conversion_end - image_conversion_start} seconds.")
 
 ocr_start = time.time()
-ocr.ocr_images_ollama()
+ocr.ocr_images()
 ocr_end = time.time()
 
 log.log(f"OCR conversion took: {ocr_end - ocr_start} seconds.")
+
+summarise_start = time.time()
+summarise.summarise_ollama()
+summarise_end = time.time()
+
+log.log(f"Summarisation took: {summarise_end - summarise_start} seconds.")

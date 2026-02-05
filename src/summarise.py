@@ -1,10 +1,10 @@
-from openrouter import OpenRouter
 import os
-import lmstudio as lms
 from ollama import chat
 from ollama import ChatResponse
+import get_settings
 
 def summarise_ollama():
+
     # Open the .txt file
     files_to_process = [] # Stores the files that need processing in an array
 
@@ -20,7 +20,7 @@ def summarise_ollama():
 
 
         response: ChatResponse = chat(
-            model='granite4:latest', # Able to select the model
+            model=get_settings.gs('sum_model_name'), # Able to select the model
             messages = [
                 {
                     'role': 'user', # Adds the role 
@@ -29,7 +29,7 @@ def summarise_ollama():
                 },
         ],
         options={
-            'num_ctx':32000, # Set the context length
+            'num_ctx':int(get_settings.gs('sum_context_length')), # Set the context length
         }
         )
 
@@ -39,3 +39,5 @@ def summarise_ollama():
         f = open(f"./output/summarise/{file_name_only}.txt", "w")
         f.write(response['message']['content'])
         f.close()
+
+        print(f"Completed summary on {current_file}")
