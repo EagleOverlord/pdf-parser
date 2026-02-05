@@ -77,6 +77,7 @@ def ocr_images_ollama():
 
             save_output(response['message']['content'],current_file)
             print(f"Completed file {current_file}")
+            log.log(f"Completed file {current_file}")
 
         except Exception as e:
             log.log(f"Failed to OCR the following file {current_file}. Error {e}")
