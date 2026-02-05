@@ -54,26 +54,30 @@ def ocr_images_ollama():
     
     for current_file in images_to_process: # Loops through the images and proccesses them all individually
 
-        response: ChatResponse = chat(
-            model=model_name,
-            messages=[
-            {
-                'role': 'user', # Set the role of the api
-                'content': 'Free OCR.', # Prompt
-                'images': [current_file] # Select the image
-            },
-        ],
-        options={
-            'num_ctx':8000, # Set the context length
-        }
-        )
+        try:
+            response: ChatResponse = chat(
+                model=model_name,
+                messages=[
+                {
+                    'role': 'user', # Set the role of the api
+                    'content': 'Free OCR.', # Prompt
+                    'images': [current_file] # Select the image
+                },
+            ],
+            options={
+                'num_ctx':8000, # Set the context length
+            }
+            )
+            file_name_only = os.path.basename(current_file)
 
-        file_name_only = os.path.basename(current_file)
+            # Write the results to a .txt file named after the input
+            f = open(f"./output/text/{file_name_only}.txt", "w")
+            f.write("\n")
+            f.write(response['message']['content'])
+            f.close()
 
-        # Write the results to a .txt file named after the input
-        f = open(f"./output/text/{file_name_only}.txt", "w")
-        f.write("\n")
-        f.write(response['message']['content'])
-        f.close()
+        except Exception as e:
+            log(f"Failed to convert the following file: {current_file}.")
+            continue
 
     chat(model=model_name, messages =[], keep_alive=0)
