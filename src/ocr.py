@@ -1,10 +1,11 @@
 import lmstudio as lms
 import ollama
-from ollama import chat
+from ollama import ResponseError, chat
 from ollama import ChatResponse
 import os
 import datetime
-import log
+from log import *
+import requests
 
 def ocr_images_lmstudio():
 
@@ -20,7 +21,7 @@ def ocr_images_lmstudio():
             images_to_process.append(entry.path)
 
     # Load the model that will be used
-    model = lms.llm("allenai/olmocr-2-7b")
+    model = lms.llm("allenai/olmocr-2-7b") # This imports the wrong quantization, I'll fix it in a bit
 
     for current_file in images_to_process:
         image_path = current_file
@@ -40,11 +41,11 @@ def ocr_images_lmstudio():
         f.write(prediction)
         f.close()
 
-def ocr_images_ollama():
+def ocr_images_ollama(model_name):
 
     directory = "./output" # Set the directory where the outputted images will be located
 
-    model_name = "deepseek-ocr:latest" # Set the model name
+    log(f"Using model: {model_name}.")
 
     images_to_process = [] # Array to store the variables in
 
@@ -76,8 +77,40 @@ def ocr_images_ollama():
             f.write(response['message']['content'])
             f.close()
 
+<<<<<<< HEAD
         except Exception as e:
             log(f"Failed to convert the following file: {current_file}.")
             continue
+=======
+        # Write the results to a .txt file named after the input
+        f = open(f"./output/text/{file_name_only}.txt", "w")
+        f.write("\n")
+        f.write(response['message']['content'])
+        f.close()
+        log(f"Finished: {current_file}.")
+>>>>>>> 0072df8522f69d6126c7279e5f17397f426ed11e
+
 
     chat(model=model_name, messages =[], keep_alive=0)
+
+def choose_model():
+
+    # Hashmap of supported LLM models, there's probably a better way to do this
+
+    models = {1:"deepseek-ocr:latest", 
+              2:"qwen3-vl:8b",
+              } 
+
+    print("Pick an AI model to use for OCR. The following models are supported:")
+    for model_num, model_name in models.items():
+        print(f"{model_num}. {model_name}")
+    choice = int(input("Enter the number of the model you want to use: "))
+    if choice in models:
+        model_name = models[choice]
+        os.system(f"ollama pull {model_name}")
+    else:
+        print("Invalid choice, defaulting to deepseek-ocr:latest")
+        model_name = "deepseek-ocr:latest"
+
+
+    return model_name
