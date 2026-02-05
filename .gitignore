@@ -1,0 +1,6 @@
+# Ignore user-specific directories and files
+.vscode/
+input
+log
+output
+src/__pycache__/
