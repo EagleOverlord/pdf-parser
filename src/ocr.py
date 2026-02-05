@@ -5,16 +5,27 @@ import os
 import datetime
 import log
 
+
+# Set the settings for the program
+output_directory = "./output"
+file_format = ".txt"
+
+def save_output(content,file_name):
+
+    file_name_only = os.path.basename(file_name)
+
+    if file_format == ".txt":
+        f = open(f"./output/text/{file_name_only}{file_format}","w")
+        f.write(content)
+        f.close()
+    else:
+        print("Not a valid file format")
+        quit()
+
 def ocr_images_lmstudio():
-
-
-    # Get the file name and location of all the images in the directory
-
-    directory = "./output"
-
     images_to_process = [] # Array where all the files are stored
 
-    for entry in os.scandir(directory):
+    for entry in os.scandir(output_directory):
         if entry.is_file():
             images_to_process.append(entry.path)
 
@@ -41,11 +52,9 @@ def ocr_images_lmstudio():
 
 def ocr_images_ollama():
 
-    directory = "./output" # Set the directory where the outputted images will be located
-
     images_to_process = [] # Array to store the variables in
 
-    for entry in os.scandir(directory): # Loops the output diretory for the images to load
+    for entry in os.scandir(output_directory): # Loops the output diretory for the images to load
         if entry.is_file():
             images_to_process.append(entry.path)
     
@@ -66,13 +75,8 @@ def ocr_images_ollama():
             }
             )
 
-            file_name_only = os.path.basename(current_file)
-
-            # Write the results to a .txt file named after the input
-            f = open(f"./output/text/{file_name_only}.txt", "w")
-            f.write("\n")
-            f.write(response['message']['content'])
-            f.close()
+            save_output(response['message']['content'],current_file)
+            print(f"Completed file {current_file}")
 
         except Exception as e:
             log.log(f"Failed to OCR the following file {current_file}. Error {e}")
