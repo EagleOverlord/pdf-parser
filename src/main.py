@@ -13,6 +13,7 @@ log.log(f"Imports successfull at: {datetime.datetime.now()}")
 os.makedirs("./input", exist_ok=True)
 os.makedirs("./output", exist_ok=True)
 os.makedirs("./output/text", exist_ok=True)
+os.makedirs("./output/summarise", exist_ok=True)
 
 log.log(f"Created directories successfull at: {datetime.datetime.now()}")
 
