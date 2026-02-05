@@ -72,6 +72,6 @@ def ocr_images_ollama():
             f.close()
 
         except Exception as e:
-            log(f"Failed to OCR the following file {current_file}. Error {e}")
+            log.log(f"Failed to OCR the following file {current_file}. Error {e}")
 
     chat(model='qwen3-vl:8b', messages =[], keep_alive=0)
