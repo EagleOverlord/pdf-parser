@@ -52,16 +52,19 @@ def ocr_images_ollama():
     for current_file in images_to_process: # Loops through the images and proccesses them all individually
 
         try:
-            response: ChatResponse = chat(model='qwen3-vl:8b', messages=[
-            {
-                'role': 'user', # Set the role of the api
-                'content': 'OCR this image.', # Prompt
-                'images': [current_file] # Select the image
-            },
-            ])
+            response: ChatResponse = chat(
+                model='deepseek-ocr:latest',
+                messages=[
+                    {
+                        'role': 'user', # Set the role of the api
+                        'content': 'Free OCR.', # Prompt
+                        'images': [current_file] # Select the image
+                    },
+            ],
             options={
-                'num_ctx':20000, # Set the context length
+                'num_ctx':8000, # Set the context length
             }
+            )
 
             file_name_only = os.path.basename(current_file)
 
