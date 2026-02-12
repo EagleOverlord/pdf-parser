@@ -41,3 +41,5 @@ def summarise_ollama():
         f.close()
 
         print(f"Completed summary on {current_file}")
+
+    chat(model=get_settings.gs('sum_model_name'), messages =[], keep_alive=0)
