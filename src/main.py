@@ -8,6 +8,7 @@ import os
 import datetime
 import time
 import summarise
+import get_settings
 
 log.log(f"Imports successfull at: {datetime.datetime.now()}")
 
@@ -30,8 +31,10 @@ ocr_end = time.time()
 
 log.log(f"OCR conversion took: {ocr_end - ocr_start} seconds.")
 
-summarise_start = time.time()
-summarise.summarise_ollama()
-summarise_end = time.time()
+if get_settings.gs('enable_summarisation') == "True":
+
+    summarise_start = time.time()
+    summarise.summarise_ollama()
+    summarise_end = time.time()
 
 log.log(f"Summarisation took: {summarise_end - summarise_start} seconds.")
